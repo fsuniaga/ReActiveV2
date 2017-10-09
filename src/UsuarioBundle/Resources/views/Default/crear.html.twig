@@ -1,0 +1,56 @@
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/estilos.css') }}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="card card-container">
+       
+            {% if app.session.flashbag.has('error') %}
+                <div class="alert alert-danger" role="alert">
+                    <div class="container"> 
+                        {% for msg in app.session.flashbag.get('error') %}
+                            {{ msg }}
+                        {% endfor %}
+
+                    </div>
+                </div>
+            {% elseif app.session.flashbag.has('mensaje') %}
+                <div class="alert alert-success" role="alert">
+                    <div class="container"> 
+                        {% for msg in app.session.flashbag.get('mensaje') %}
+                            {{ msg }}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %} 
+            
+            <form class="form-signin" action="{{path('guardar')}}" method="post" name="crearUsuario" id="crearUsuario">
+                <span id="reauth-email" class="reauth-email" ></span>
+                <h2>Nuevo Usuario</h2><p></p>
+                <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nombre">
+                <input type="text" id="apellido" name="apellido" class="form-control" placeholder="Apellido">          
+                <input type="email" id="correo" name="correo" class="form-control" placeholder="Correo Electronico" required autofocus>
+                <input type="password" id="clave" name="clave" class="form-control" placeholder="Contraseña">
+                <input type="password" id="claver" name="claver" class="form-control" placeholder="Repetir Contraseña"><br>
+                <input type="radio" name="rol" value="ADMIN">&nbsp;Administrador&nbsp;&nbsp;
+                <input type="radio" name="rol" value="USER">&nbsp;Usuario
+                <label for="rol" class="error" style="display:none;"></label>
+                <p></p>
+                <div id="errores"></div>   
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Crear</button>
+            </form>
+            <a href="{{path('usuario_homepage')}}" class="forgot-password">
+                Iniciar Sesion
+            </a>                
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+     <script src="{{ asset('js/jquery.min.js') }}"></script>
+     <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
+     <script src="{{ asset('js/reactive.js') }}"></script>
+{% endblock %}

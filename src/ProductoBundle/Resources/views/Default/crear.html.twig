@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ include('Default/menu.html.twig') }}
+<style type="text/css">
+
+.error{
+    font-weight: normal; 
+    color: red;
+}
+</style>
+
+{% set nombre = producto is defined ? producto.nombre : ''  %}
+{% set fechaVencimiento = producto is defined and producto.fechavencimiento ? producto.fechavencimiento|date('Y-m-d') : null %}
+{% set readonlyFecha = producto is defined and producto.fechavencimiento ? '' : 'readonly' %}
+{% set observacionCodigo = producto is defined ? producto.observacioncodigo : ''  %}
+{% set readonlyObser = producto is defined ? '' : 'readonly'  %}
+{% set cantidad = producto is defined ? producto.cantidad : ''  %}
+{% set perecedero = producto is defined and producto.tipo == 'PERECEDERO' ? 'checked' : ''  %}
+{% set noPerecedero = producto is defined and producto.tipo == 'NO PERECEDERO' ? 'checked' : ''  %}
+{% set cumple = producto is defined and producto.codigo == 'CUMPLE' ? 'checked' : ''  %}
+{% set noCumple = producto is defined and producto.codigo == 'NO CUMPLE' ? 'checked' : ''  %}
+{% set noAplica = producto is defined and producto.codigo == 'NO APLICA' ? 'checked' : ''  %}
+{% set id = producto is defined ? producto.id : ''  %}
+
+<div class="row">
+    <div class="col-md-6 col-sm-12 col-lg-6 col-md-offset-3">
+    {% if app.session.flashbag.has('error') %}
+        <div class="alert alert-danger" role="alert">
+            <div class="container"> 
+                {% for msg in app.session.flashbag.get('error') %}
+                    {{ msg }}
+                {% endfor %}
+            </div>
+        </div>
+    {% elseif app.session.flashbag.has('mensaje') %}
+        <div class="alert alert-success" role="alert">
+            <div class="container"> 
+                {% for msg in app.session.flashbag.get('mensaje') %}
+                    {{ msg }}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}  
+    <div class="panel panel-primary">
+      <div class="panel-heading">Introduzca los datos del Producto
+      </div>
+      <div class="panel-body">
+        <form id="registrarProducto" name="registrarProducto" action="{{path(ruta)}}" method="post">
+          <input type="hidden" name="id"  id="id" value="{{id}}">
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" name="nombre" class="form-control" type="text" value="{{nombre}}">
+          </div>
+          <div class="form-group">
+            <label for="tipo">Tipo</label>
+            <div>
+                <label class="radio-inline"><input type="radio" id="tipo0" name="tipo" onclick="cambiaTipo()" value="PERECEDERO" {{perecedero}}>Perecedero</label>
+                <label class="radio-inline"><input type="radio" id="tipo1" name="tipo" onclick="cambiaTipo()" value="NO PERECEDERO" {{noPerecedero}}>No Perecedero</label><br>
+                <label for="tipo" class="error" style="display:none;"></label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="fechaVencimiento">Fecha de Vencimiento</label>
+            <input type="date" name="fechaVencimiento"  id="fechaVencimiento" class="form-control" value="{{fechaVencimiento}}" {{ readonlyFecha }}>
+          </div>          
+          <div class="form-group">
+            <label for="codigo">Codificación</label>
+            <div>
+                <label class="radio-inline"><input type="radio" id="codigo0" name="codigo" onclick="cambiaCodigo()" value="CUMPLE" {{cumple}}>Cumple</label>
+                <label class="radio-inline"><input type="radio" id="codigo1" name="codigo" onclick="cambiaCodigo()" value="NO CUMPLE" {{noCumple}}>No Cumple</label>
+                <label class="radio-inline"><input type="radio" id="codigo2" name="codigo" onclick="cambiaCodigo()" value="NO APLICA" {{noAplica}}>No Aplica</label><br>
+                <label for="codigo" class="error" style="display:none;"></label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label id="etiquetacodigo" name="etiquetacodigo" for="observacionCodigo">Código/Observación</label>
+            <textarea id="observacionCodigo" {{ readonlyObser }} name="observacionCodigo" class="form-control" rows="3">{{observacionCodigo}}</textarea>
+          </div>
+          <div class="form-group">
+            <label for="cantidad">Cantidad</label>
+            <input type="number" class="form-control" id="cantidad" name="cantidad" value="{{ cantidad }}">
+          </div>
+          <button id="submit" type="submit" value="submit" class="btn btn-primary center">Guardar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

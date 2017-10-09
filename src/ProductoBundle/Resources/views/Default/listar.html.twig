@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ include('Default/menu.html.twig') }}
+
+	<div class="container">
+    {% if app.session.flashbag.has('error') %}
+        <div class="alert alert-danger" role="alert">
+            <div class="container"> 
+                {% for msg in app.session.flashbag.get('error') %}
+                    {{ msg }}
+                {% endfor %}
+            </div>
+        </div>
+    {% elseif app.session.flashbag.has('mensaje') %}
+        <div class="alert alert-success" role="alert">
+            <div class="container"> 
+                {% for msg in app.session.flashbag.get('mensaje') %}
+                    {{ msg }}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}		
+	  <h2>Listado de Productos</h2> 
+	  <table class="table table-hover" id="tblProductos">
+		<thead>
+			<tr>
+		        <th>ID</th>
+		        <th>Nombre</th>
+		        <th>Codificación</th>
+		        <th>Código/Observación</th>
+		        <th>Tipo</th>
+		        <th>Fecha de Vencimiento</th>
+		        <th>Cantidad</th>
+		        <th>Usuario</th>
+		        <th>Editar</th>	
+		        <th>Eliminar</th>		        
+			</tr>
+			</thead>
+			<tbody>
+			    {% for producto in productos %}
+			    <tr>
+			        <td>{{ producto.id }}</td>
+			        <td>{{ producto.nombre }}</td>
+			        <td>{{ producto.codigo }}</td>
+			        <td>{{ producto.observacioncodigo }}</td>
+			        <td>{{ producto.tipo }}</td>
+			        <td>{% if producto.fechavencimiento %}
+                		{{ producto.fechavencimiento|date('d-m-Y')  }}
+						{% else %}
+							<span title="fechavencimiento"></span>
+						{% endif %}	
+					</td>
+			        <td>{{ producto.cantidad }}</td>
+			        <td>{{ producto.usuario.nombre }} {{ producto.usuario.apellido }}</td>
+			        <td>
+			        	<p data-placement="top" data-toggle="tooltip" title="Editar">
+			        		<a href="{{ path('editar', {'id': producto.id}) }}" class="btn btn-primary btn-xs">
+			        			<span class="glyphicon glyphicon-pencil"></span>
+			        		</a>
+			        	</p>
+			        </td>
+			        <td>
+			        	<p data-placement="top" data-toggle="tooltip" title="Eliminar">
+			        		<a href="{{ path('eliminar', {'id': producto.id}) }}" class="btn btn-danger btn-xs">
+			        			<span class="glyphicon glyphicon-trash"></span>
+			        		</a>
+			        	</p>
+			        </td>
+			    </tr>
+			    {% endfor %}
+			</tbody>
+		</table>
+	</div>
+	<div align="center">
+        <ul class="pagination">
+          <li><a href="{{ path('listar', {'page': 1}) }}">&laquo;</a></li>
+            {% for i in 1..pagesCount %}
+                <li><a href="{{ path('listar', {'page': i}) }}">{{ i }}</a></li> 
+            {% endfor %}
+          <li><a href="{{ path('listar', {'page': pagesCount}) }}">&raquo;</a></li>
+        </ul>
+    </div>
+{% endblock %}

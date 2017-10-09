@@ -1,0 +1,27 @@
+producto_homepage:
+    path:     /
+    defaults: { _controller: ProductoBundle:Default:index }
+
+crear:
+    path:     /crear/
+    defaults: { _controller: ProductoBundle:Default:crear }
+
+listar:
+    path:     /listar/{page}
+    defaults: { _controller: ProductoBundle:Default:listar, page: 1 }
+
+eliminar:
+    path:     /eliminar/{id}
+    defaults: { _controller: ProductoBundle:Default:eliminar, id: 1}
+
+registrar:
+    path:     /registrar
+    defaults: { _controller: ProductoBundle:Default:registrar }
+
+editar:
+    path:     /editar/{id}
+    defaults: { _controller: ProductoBundle:Default:editar, id: 0 }    
+
+actualizar:
+    path:     /actualizar
+    defaults: { _controller: ProductoBundle:Default:actualizar } 
