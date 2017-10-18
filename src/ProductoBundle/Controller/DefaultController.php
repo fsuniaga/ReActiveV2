@@ -143,6 +143,11 @@ class DefaultController extends Controller
 
         return $this->render('ProductoBundle:Default:crear.html.twig', array('producto' => $producto, 'ruta' => 'actualizar'));    
    } 
+
+    public function cumplimientoAction()
+    {
+        return $this->render('ProductoBundle:Default:graficoCumplimiento.html.twig');
+    }   
 }
 
 

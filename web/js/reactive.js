@@ -46,6 +46,52 @@ $( document ).ready(function() {
         }
     });
 
+    var chart = AmCharts.makeChart("chartdiv", {
+        "type": "serial",
+        "theme": "light",
+        "dataProvider": JSON.parse($("#productos").val()),
+        "valueAxes": [{
+            "stackType": "regular",
+            "axisAlpha": 0.3,
+            "gridAlpha": 0
+        }],
+        "graphs": [{
+            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+            "fillAlphas": 0.8,
+            "labelText": "[[value]]",
+            "lineAlpha": 0.3,
+            "type": "column",
+            "color": "#000000",
+            "valueField": "cantidad"
+        }],
+        "categoryField": "codigo",
+        "categoryAxis": {
+            "gridPosition": "start",
+            "axisAlpha": 0,
+            "gridAlpha": 0,
+            "position": "left"
+        },
+        "export": {
+            "enabled": true
+         }
+
+    });
+
+    var chart2 = AmCharts.makeChart("chartdiv2", {
+      "type": "pie",
+      "theme": "none",
+      "dataProvider": JSON.parse($("#productosTipo").val()),
+      "titleField": "tipo",
+      "valueField": "cantidad",
+      "labelRadius": 5,
+
+      "radius": "42%",
+      "innerRadius": "60%",
+      "labelText": "[[title]]",
+      "export": {
+        "enabled": true
+      }
+    });
 });
 
 /**

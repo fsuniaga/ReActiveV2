@@ -2,4 +2,41 @@
 
 {% block body %}
     {{ include('Default/menu.html.twig') }}
+
+	<style>
+	#chartdiv {
+		width: 100%;
+		height: 400px;
+	}
+
+	#chartdiv2 {
+	    width       : 100%;
+	    height      : 500px;
+	    font-size   : 11px;
+	}                           
+
+	</style>
+	<input type="hidden" id="productos" name="productos" value="{{productos}}">
+	<input type="hidden" id="productosTipo" name="productosTipo" value="{{productosTipo}}">	
+	
+	<!-- HTML -->
+	<div class="container">
+		<h3>Dashboard
+		        <small>Version 1.0</small>
+		</h3><br>	
+	    <div class="panel panel-primary">
+	      <div class="panel-heading">Productos Codificados</div>
+	      <div class="panel-body">
+	      		<div id="chartdiv"></div>
+	 	  </div>
+	    </div>		
+	    <div class="panel panel-info">
+	      <div class="panel-heading">Productos por Tipo</div>
+	      <div class="panel-body">
+	      		<div id="chartdiv2"></div>
+	      </div>
+	    </div>		
+	</div>
+	
+
 {% endblock %}

@@ -25,3 +25,7 @@ editar:
 actualizar:
     path:     /actualizar
     defaults: { _controller: ProductoBundle:Default:actualizar } 
+
+cumplimiento:
+    path:     /cumplimiento
+    defaults: { _controller: ProductoBundle:Default:cumplimiento } 

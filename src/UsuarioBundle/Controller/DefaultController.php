@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use UsuarioBundle\Entity\Usuario;
 use Symfony\Component\HttpFoundation\Session\Session;
+use ProductoBundle\Entity\Producto;
 
 class DefaultController extends Controller
 {
@@ -13,6 +14,28 @@ class DefaultController extends Controller
     {
         return $this->render('UsuarioBundle:Default:index.html.twig');
     }
+
+    public function productosCodificados()
+    {
+        $prod=$this->getDoctrine()->getEntityManager();
+        $productos = new Producto();
+        $consulta = "SELECT p.codigo,count(p.id) as cantidad FROM ProductoBundle\Entity\Producto p GROUP BY p.codigo";
+        $query = $prod->createQuery($consulta);
+        $productos = $query->getResult();
+
+       return json_encode($productos);
+    }
+
+    public function productosTipo()
+    {
+        $prod=$this->getDoctrine()->getEntityManager();
+        $productos = new Producto();
+        $consulta = "SELECT p.tipo,count(p.id) as cantidad FROM ProductoBundle\Entity\Producto p GROUP BY p.tipo";
+        $query = $prod->createQuery($consulta);
+        $productos = $query->getResult();
+
+       return json_encode($productos);
+    }    
 
     public function loginAction (Request $request)
     {
@@ -28,7 +51,9 @@ class DefaultController extends Controller
 			$session = $request->getSession();
 			$session->set('nombre', $usuario->getNombre().' '.$usuario->getApellido());
             $session->set('idUsuario', $usuario->getId());
-			return $this->render('default/index.html.twig');
+            $data = $this->productosCodificados();
+            $dataTipo = $this->productosTipo();
+			return $this->render('default/index.html.twig', array('productos' => $data,'productosTipo' => $dataTipo));
         }
         else {
 			$this->addFlash('error', 'Usuario o Contraseña Invalida');    
@@ -45,7 +70,9 @@ class DefaultController extends Controller
 
     public function inicioAction()
     {
-        return $this->render('default/index.html.twig');
+        $data = $this->productosCodificados();
+        $dataTipo = $this->productosTipo();
+        return $this->render('default/index.html.twig', array('productos' => $data,'productosTipo' => $dataTipo));
     } 
 
     public function crearAction()
